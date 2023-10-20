@@ -55,10 +55,11 @@ class CurrencyConversion extends API
      * CurrencyConversion constructor.
      *
      * @param Client|null $client
+     * @param array $config
      */
-    public function __construct(?Client $client = null)
+    public function __construct(?Client $client = null, array $config = [])
     {
-        parent::__construct($client);
+        parent::__construct($client, $config);
 
         $this->setQueryParams(function () {
             if (!$this->from) {

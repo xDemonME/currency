@@ -25,13 +25,22 @@ abstract class API
      */
     protected $query_params_callback = null;
 
+
+    /**
+     * @var string|null
+     */
+    protected $access_key = null;
+
     /**
      * CurrencyConversion constructor.
      *
      * @param Client|null $client
+     * @param array $config
      */
-    public function __construct(?Client $client = null)
+    public function __construct(?Client $client = null, array $config = [])
     {
+        $this->base_url = $config['base_url'] ?? $this->base_url;
+        $this->access_key = $config['access_key'] ?? $this->access_key;
         $this->client = $client;
     }
 
@@ -56,6 +65,10 @@ abstract class API
             foreach ($this->params as $key => $param) {
                 $this->query_params[$key] = $param;
             }
+        }
+
+        if (!is_null($this->access_key)) {
+            $this->query_params['access_key'] = $this->access_key;
         }
     }
 

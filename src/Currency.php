@@ -5,8 +5,8 @@ namespace AmrShawky;
 use GuzzleHttp\Client;
 
 /**
- * @method static CurrencyConversion convert(?Client $client = null)
- * @method static CurrencyRatesProxy rates(?Client $client = null)
+ * @method static CurrencyConversion convert(?Client $client = null, array $config = [])
+ * @method static CurrencyRatesProxy rates(array $config = [])
  */
 
 class Currency

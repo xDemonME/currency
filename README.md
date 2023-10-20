@@ -1,9 +1,9 @@
 # Currency
 ![Tests](https://github.com/amrshawky/currency/workflows/Tests/badge.svg?branch=master) ![Packagist License](https://img.shields.io/packagist/l/amrshawky/currency?color=success&label=License) ![Packagist Version](https://img.shields.io/packagist/v/amrshawky/currency?label=Packagist) ![Packagist Downloads](https://img.shields.io/packagist/dt/amrshawky/currency?color=success&label=Downloads)
 
-> **This package is not maintained anymore.**
+> **This package supports exchangerate.host API keys.**
 
-Currency is a simple PHP library for current and historical currency exchange rates & crypto exchange rates. based on the free API [exchangerate.host](https://exchangerate.host "exchangerate.host Homepage") - no API keys needed!
+Currency is a simple PHP library for current and historical currency exchange rates & crypto exchange rates. based on the free API [exchangerate.host](https://exchangerate.host "exchangerate.host Homepage")!
 
 ## Requirements
 - PHP >= 7.2
@@ -12,7 +12,7 @@ Currency is a simple PHP library for current and historical currency exchange ra
 ## Installation
 
 ```
-composer require amrshawky/currency
+composer require xdemonme/currency
 ```
 
 ## Usage
@@ -25,7 +25,10 @@ require 'vendor/autoload.php';
 
 use AmrShawky\Currency;
 
+$accessKey = 'YOUR_API_ACCESS_KEY';
+
 Currency::convert()
+        ->setAccessKey($accessKey)
         ->from('USD')
         ->to('EUR')
         ->get();
@@ -37,7 +40,10 @@ The amount to be converted is default to `1`, you may specify the amount:
 ```php
 use AmrShawky\Currency;
 
+$accessKey = 'YOUR_API_ACCESS_KEY';
+
 Currency::convert()
+        ->setAccessKey($accessKey)
         ->from('USD')
         ->to('EUR')
         ->amount(50)
@@ -49,7 +55,10 @@ Currency::convert()
 ```php
 use AmrShawky\Currency;
 
+$accessKey = 'YOUR_API_ACCESS_KEY';
+
 Currency::convert()
+        ->setAccessKey($accessKey)
         ->from('USD')
         ->to('EUR')
         ->date('2019-08-01')
@@ -61,7 +70,10 @@ Currency::convert()
 ```php
 use AmrShawky\Currency;
 
+$accessKey = 'YOUR_API_ACCESS_KEY';
+
 Currency::convert()
+        ->setAccessKey($accessKey)
         ->from('USD')
         ->to('EUR')
         ->round(2)
@@ -73,27 +85,36 @@ Currency::convert()
 ```php
 use AmrShawky\Currency;
 
+$accessKey = 'YOUR_API_ACCESS_KEY';
+
 Currency::convert()
+        ->setAccessKey($accessKey)
         ->from('BTC')
         ->to('ETH')
         ->source('crypto')
         ->get();
 ```
 
-### 2. Latest Rates
+### 2. Live (latest) Rates
+> Note: This method is DEPRECATED
+
 To get latest rates you may chain the methods:
 
 ```php
 use AmrShawky\Currency;
 
+$accessKey = 'YOUR_API_ACCESS_KEY';
+
 Currency::rates()
-        ->latest()
+        ->setAccessKey($accessKey)
+        ->live()
         ->get();
 
 // ['USD' =>  1.215707, ...]
 
 Currency::rates()
-        ->latest()
+        ->setAccessKey($accessKey)
+        ->live()
         ->source('crypto')
         ->get();
 
@@ -107,8 +128,11 @@ This will return an `array` of all available currencies or `null` on failure.
 ```php
 use AmrShawky\Currency;
 
+$accessKey = 'YOUR_API_ACCESS_KEY';
+
 Currency::rates()
-        ->latest()
+        ->setAccessKey($accessKey)
+        ->live()
         ->symbols(['USD', 'EUR', 'EGP']) //An array of currency codes to limit output currencies
         ->base('GBP') //Changing base currency (default: EUR). Enter the three-letter currency code of your preferred base currency.
         ->amount(5.66) //Specify the amount to be converted
@@ -123,13 +147,17 @@ Historical rates are available for most currencies all the way back to the year 
 ```php
 use AmrShawky\Currency;
 
+$accessKey = 'YOUR_API_ACCESS_KEY';
+
 Currency::rates()
+        ->setAccessKey($accessKey)
         ->historical('2020-01-01') //`YYYY-MM-DD` Required date parameter to get the rates for
         ->get();
 
 // ['USD' =>  1.1185, ...]
 
 Currency::rates()
+        ->setAccessKey($accessKey)
         ->historical('2021-03-30')
         ->source('crypto')
         ->get();
@@ -141,7 +169,10 @@ Same as latest rates you may chain any of the available methods:
 ```php
 use AmrShawky\Currency;
 
+$accessKey = 'YOUR_API_ACCESS_KEY';
+
 Currency::rates()
+        ->setAccessKey($accessKey)
         ->historical('2020-01-01')
         ->symbols(['USD', 'EUR', 'CZK'])
         ->base('GBP')
@@ -150,15 +181,18 @@ Currency::rates()
         ->source('ecb')
         ->get();
 ```
-### 4. Timeseries Rates
-Timeseries are for daily historical rates between two dates of your choice, with a maximum time frame of 365 days.
+### 4. Timeframe (timeseries) Rates
+Timeframe (timeseries) are for daily historical rates between two dates of your choice, with a maximum time frame of 365 days.
 This will return an `array` or `null` on failure.
 
 ```php
 use AmrShawky\Currency;
 
+$accessKey = 'YOUR_API_ACCESS_KEY';
+
 Currency::rates()
-        ->timeSeries('2021-05-01', '2021-05-02') //`YYYY-MM-DD` Required dates range parameters
+        ->setAccessKey($accessKey)
+        ->timeFrame('2021-05-01', '2021-05-02') //`YYYY-MM-DD` Required dates range parameters
         ->symbols(['USD']) //[optional] An array of currency codes to limit output currencies
         ->base('GBP') //[optional] Changing base currency (default: EUR). Enter the three-letter currency code of your preferred base currency.
         ->amount(5.66) //[optional] Specify the amount to be converted (default: 1)
@@ -178,15 +212,18 @@ Currency::rates()
  */
 ```
 
-### 5. Fluctuations
+### 5. Change (fluctuations)
 Retrieve information about how currencies fluctuate on a day-to-day basis, with a maximum time frame of 365 days.
 This will return an `array` or `null` on failure.
 
 ```php
 use AmrShawky\Currency;
 
+$accessKey = 'YOUR_API_ACCESS_KEY';
+
 Currency::rates()
-        ->fluctuations('2021-03-29', '2021-04-15') //`YYYY-MM-DD` Required dates range parameters
+        ->setAccessKey($accessKey)
+        ->change('2021-03-29', '2021-04-15') //`YYYY-MM-DD` Required dates range parameters
         ->symbols(['USD']) //[optional] An array of currency codes to limit output currencies
         ->base('GBP') //[optional] Changing base currency (default: EUR). Enter the three-letter currency code of your preferred base currency.
         ->amount(5.66) //[optional] Specify the amount to be converted (default: 1)
@@ -214,7 +251,10 @@ If you would like to throw an exception instead, you may use the `throw` method,
 ```php
 use AmrShawky\Currency;
 
+$accessKey = 'YOUR_API_ACCESS_KEY';
+
 Currency::convert()
+        ->setAccessKey($accessKey)
         ->from('USD')
         ->to('EUR')
         ->amount(20)
@@ -227,7 +267,10 @@ If you would like to perform some additional logic before the exception is throw
 ```php
 use AmrShawky\Currency;
 
+$accessKey = 'YOUR_API_ACCESS_KEY';
+
 Currency::convert()
+        ->setAccessKey($accessKey)
         ->from('USD')
         ->to('EUR')
         ->amount(20)
@@ -236,6 +279,24 @@ Currency::convert()
         })
         ->get();
 ```
+
+### Using HTTPS
+
+If your Subscription Plan supports HTTPS Encryption, you may use HTTPS protocol instead of HTTP using `useHTTPS` method:
+
+```php
+use AmrShawky\Currency;
+
+$accessKey = 'YOUR_API_ACCESS_KEY';
+
+Currency::convert()
+        ->setAccessKey($accessKey)
+        ->useHTTPS()
+        ->from('USD')
+        ->to('EUR')
+        ->get();
+```
+
 ### Other Methods
 
 - You may use the `withoutVerifying` method to indicate that TLS certificates should not be verified when sending the request:
@@ -243,7 +304,10 @@ Currency::convert()
 ```php
 use AmrShawky\Currency;
 
+$accessKey = 'YOUR_API_ACCESS_KEY';
+
 Currency::convert()
+        ->setAccessKey($accessKey)
         ->from('USD')
         ->to('EUR')
         ->withoutVerifying()
@@ -255,7 +319,10 @@ Currency::convert()
 ```php
 use AmrShawky\Currency;
 
+$accessKey = 'YOUR_API_ACCESS_KEY';
+
 Currency::rates()
+        ->setAccessKey($accessKey)
         ->historical('2021-04-30')
         ->withOptions([
             'debug'   => true,
@@ -269,7 +336,10 @@ Currency::rates()
 ```php
 use AmrShawky\Currency;
 
+$accessKey = 'YOUR_API_ACCESS_KEY';
+
 Currency::rates()
+        ->setAccessKey($accessKey)
         ->latest()
         ->when(true, function ($rates) {
             // will execute

@@ -102,8 +102,9 @@ class CurrencyRates extends API
      */
     protected function getResults(object $response)
     {
-        if (!empty($rates = (array) $response->rates)) {
-            unset($response->rates);
+        if (!empty($response->quotes)) {
+            $rates = (array) $response->quotes;
+            unset($response->quotes);
 
             return $rates;
         }

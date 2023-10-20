@@ -16,6 +16,11 @@ abstract class API
     protected $base_url  = null;
 
     /**
+     * @var bool
+     */
+    protected $use_https = false;
+
+    /**
      * @var array
      */
     protected $query_params = [];
@@ -24,7 +29,6 @@ abstract class API
      * @var array
      */
     protected $query_params_callback = null;
-
 
     /**
      * @var string|null
@@ -80,8 +84,14 @@ abstract class API
     {
         $this->buildQueryParams();
 
+        $url = $this->base_url;
+
+        if (!$this->use_https) {
+            $url = str_replace('https', 'http', $url);
+        }
+
         $response = $this->request(
-            $this->base_url,
+            $url,
             $this->query_params
         );
 
@@ -94,6 +104,29 @@ abstract class API
     protected function setQueryParams(Closure $callback)
     {
         $this->query_params_callback = $callback;
+    }
+
+
+    /**
+     * @param string $access_key
+     * @return API
+     */
+    public function setAccessKey(string $access_key): API
+    {
+        $this->access_key = $access_key;
+
+        return $this;
+    }
+
+    /**
+     * @param bool $use_https
+     * @return $this
+     */
+    public function useHTTPS(bool $use_https = false): API
+    {
+        $this->use_https = $use_https;
+
+        return $this;
     }
 
     /**
